@@ -1,5 +1,6 @@
 const { ICommand } = require('@libs/builders/command/command.builder')
-const { lolhuman } = require('@libs/constants/api/api.constant')
+const config = require('@config')
+const axios = require('axios').default
 
 /**
  * @type { ICommand }
@@ -13,7 +14,8 @@ module.exports = {
     expectedArgs: '<link>',
     example: '{prefix}{command} https://vt.tiktok.com/ZSwWCk5o/',
     callback: async ({ msg, args }) => {
-        const result = await lolhuman.tiktokNoWM3(args[0])
-        return msg.replyVideo({ url: result })
+        const { data } = await axios.get(`https://api.akuari.my.id/downloader/tiktoknowm?link=${args[0]}`).catch(console.log)
+        return msg.replyVideo({ url: data.result} )
+        
     },
 }
